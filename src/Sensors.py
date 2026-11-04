@@ -1,11 +1,13 @@
 import numpy as np
 from abc import ABC, abstractmethod
 
+
 class Sensor(ABC):
     def __init__(self, name: str, min_resolution: float):
         self.name = name
         self.min_resolution = min_resolution
 
+#Sensor (classe abstrata): exige noise_std (propriedade) e read_measurement().
     @property
     @abstractmethod
     def noise_std(self) -> float:
@@ -23,6 +25,7 @@ class Sensor(ABC):
         """
         pass
 
+#PIDGasSensor: soma ruído gaussiano N(0, noise_std) à concentração real. Se o resultado ficar abaixo de min_resolution, devolve 0.0, o que simula o limite de detecção.
 class PIDGasSensor(Sensor):
     def __init__(self, name: str, min_resolution: float, noise_std: float = 0.001):
         super().__init__(name, min_resolution)

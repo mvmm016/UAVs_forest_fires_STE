@@ -10,18 +10,21 @@ def systematic_resample(particles: np.ndarray, measurements: np.ndarray = None) 
     """
     N = len(particles)
     weights = particles['weight']
-    
+
+    #Soma cumulativa dos pesos.
     # Array cumulativo de pesos
     cumulative_sum = np.cumsum(weights)
     cumulative_sum[-1] = 1.0 # Garante que termina exatamente em 1
-    
+
+    #Um único ponto de partida aleatório em [0, 1/N) e N pontos igualmente espaçados a partir dele.
     # Cria o passo e o ponto de partida inicial aleatório
     step = 1.0 / N
     random_start = np.random.uniform(0, step)
     
     # Array de pontos de amostragem
     points = random_start + np.arange(N) * step
-    
+
+    #searchsorted mapeia cada ponto a uma partícula. Quem tem mais peso é duplicada mais vezes e quem tem pouco peso some.
     # Encontra os índices usando busca binária
     indices = np.searchsorted(cumulative_sum, points)
     
@@ -32,6 +35,7 @@ def systematic_resample(particles: np.ndarray, measurements: np.ndarray = None) 
     # --- APLICAÇÃO DO KERNEL GAUSSIANO (Roughening / Random Walk) ---
     # ----------------------------------------------------------------
     
+    #Roughening: adiciona ruído gaussiano em cada parâmetro para as cópias não ficarem idênticas (mantém diversidade).
     # Desvios padrões da perturbação para cada variável. 
     # (Ajuste esses valores de acordo com a escala do seu ambiente/modelo)
     noise_stds = {

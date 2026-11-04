@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any
 
+#Só define a interface: EstimatorConfig (base vazia) e SourceEstimator com o método abstrato step. Permite trocar o PF por outro estimador sem mudar o main.
 @dataclass
 class EstimatorConfig:
     """Base struct for estimator configurations."""

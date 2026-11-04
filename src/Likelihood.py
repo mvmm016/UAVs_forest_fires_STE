@@ -1,5 +1,6 @@
 import numpy as np
 
+#Calcula a PDF normal de cada predição em torno da medição, com variância noise_std². Some 1e-300 para evitar peso exatamente zero.
 def gaussian_likelihood(predictions: np.ndarray, measurement: float, noise_std: float = 0.5) -> np.ndarray:
     """
     Calcula a verossimilhança de cada partícula usando uma distribuição normal.
